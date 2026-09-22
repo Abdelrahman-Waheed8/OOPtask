@@ -4,7 +4,7 @@ public class Subject
 {
     private int SubjectId;
     private string SubjectName = "";
-    public Exam? SubjectExam;
+    public Exam? SubjectExam {get; set;}
 
     public Subject(int sID,string sName,Exam sExam)
     {

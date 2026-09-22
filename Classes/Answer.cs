@@ -1,7 +1,7 @@
 public class Answer : ICloneable , IComparable
 {
     private int AnswerId;
-    private string AnswerText = "";
+    public string AnswerText = "";
 
     public Answer(int aID,string aTxt)
     {
