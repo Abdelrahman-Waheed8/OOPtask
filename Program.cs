@@ -2,8 +2,9 @@
 {
     public static void Main(string[] args)
     {
-        Answer rightans = new Answer(1, "True");
-        TrueOrFalse ToF = new TrueOrFalse("Math", "1+1=....", 2, rightans);
-        ToF.ShowQuestion();
+        Console.WriteLine("================== Examination System ==================");
+        Console.WriteLine("--------------------------------------------------------");
+        Console.WriteLine("                      Create Exam                       ");
+        Console.WriteLine("--------------------------------------------------------");
     }
 }

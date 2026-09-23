@@ -1,21 +1,27 @@
-public class Answer : ICloneable , IComparable
+public class Answer : ICloneable , IComparable<Answer>
 {
-    private int AnswerId;
-    public string AnswerText = "";
+    public int _AnswerId {get;}
+    public string _AnswerText {get; set;}
 
-    public Answer(int aID,string aTxt)
+    public Answer(int AnswerId,string AnswerText)
     {
-        AnswerId = aID;
-        AnswerText = aTxt;
+        _AnswerId = AnswerId;
+        _AnswerText = AnswerText;
+    }
+
+    public override string ToString()
+    {
+        return $"{_AnswerId}. {_AnswerText}";
     }
 
     public object Clone()
     {
-        throw new NotImplementedException();
+        return new Answer(_AnswerId, _AnswerText);
     }
 
-    public int CompareTo(object? obj)
+    public int CompareTo(Answer? obj)
     {
-        throw new NotImplementedException();
+        if(obj == null) return 1;
+        return _AnswerId.CompareTo(obj._AnswerId);
     }
 }

@@ -3,20 +3,24 @@ public abstract class Question : ICloneable
     protected string Header = "";
     protected string Body = "";
     protected int Mark;
-    public Answer[]? Answers{get;set;}
+    public List<Answer> Answers{get;set;}
     public Answer? RightAnswer{get;set;}
 
-    public Question(string header, string body, int mark, Answer[] answers, Answer rightanswer)
+    public Question(string header, string body, int mark)
     {
         Header = header;
         Body = body;
-        Mark = mark;
-        Answers = answers;
-        RightAnswer = rightanswer;
+        if(mark > 0) Mark = mark;
     }
     public void ShowQuestion()
     {
         Console.WriteLine(ToString());
+    }
+
+    public void AddAnswer(Answer answer)
+    {
+        if(answer == null) return;
+        Answers.Add(answer);
     }
 
     public override string ToString()
@@ -26,7 +30,7 @@ public abstract class Question : ICloneable
         {
             foreach(var ans in Answers)
             {
-                answertxt += $"{ans.AnswerText} \n";
+                answertxt += $"{ans._AnswerId}- {ans._AnswerText}\n";
             }
         }
 

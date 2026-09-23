@@ -1,8 +1,11 @@
 public class FinalExam : Exam
 {
+    public FinalExam(int TimeOfExam, int NumberOfQuestions, Question[] questions) : base(TimeOfExam, NumberOfQuestions, questions)
+    {
+    }
+
     public override void ShowExam()
     {
-        throw new NotImplementedException();
     }
 
     public int CalculateGrade()
