@@ -17,10 +17,11 @@ public abstract class Question : ICloneable
         Console.WriteLine(ToString());
     }
 
-    public void AddAnswer(Answer answer)
+    public void AddAnswer(Answer answer, bool rightanswer = false)
     {
         if(answer == null) return;
         Answers.Add(answer);
+        if(rightanswer) RightAnswer = answer;
     }
 
     public override string ToString()

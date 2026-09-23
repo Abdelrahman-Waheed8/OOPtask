@@ -1,6 +1,6 @@
 public class FinalExam : Exam
 {
-    public FinalExam(int TimeOfExam, int NumberOfQuestions, Question[] questions) : base(TimeOfExam, NumberOfQuestions, questions)
+    public FinalExam(int TimeOfExam, int NumberOfQuestions) : base(TimeOfExam, NumberOfQuestions)
     {
     }
 

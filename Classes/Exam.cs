@@ -2,13 +2,12 @@ public abstract class Exam
 {
     protected int _TimeOfExam;
     protected int _NumberOfQuestions;
-    public Question[]? _questions {get;set;}
+    public List<Question> _questions {get;set;}
 
-    public Exam(int TimeOfExam, int NumberOfQuestions, Question[] questions)
+    public Exam(int TimeOfExam, int NumberOfQuestions)
     {
         _TimeOfExam = TimeOfExam;
         _NumberOfQuestions = NumberOfQuestions;
-        _questions = questions;
     }
 
     public abstract void ShowExam();
