@@ -2,20 +2,22 @@ using System.Security.Cryptography.X509Certificates;
 
 public class Subject
 {
-    private int SubjectId;
-    private string SubjectName = "";
-    public Exam? SubjectExam {get; set;}
+    public int SubjectId {get; private set;}
+    public string SubjectName {get; private set;}
+    public Exam? SubjectExam {get; private set;}
 
-    public Subject(int sID,string sName,Exam sExam)
+    public Subject(int sID,string sName)
     {
         SubjectId = sID;
         SubjectName = sName;
-        SubjectExam = sExam;
     }
 
-    public void CreateExam()
+    public void CreateExam(Exam exam)
     {
-        
+        if(exam == null) throw new ArgumentNullException("Exam cannot be null");
+        if(SubjectExam != null) throw new ArgumentException("Subject already has an exam");
+
+        SubjectExam = exam;
     }
 
     public override string ToString()
