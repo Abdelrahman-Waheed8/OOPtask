@@ -1,13 +1,34 @@
 ﻿
+using System.Runtime.InteropServices;
+
 public class Program
 {
     public static void Main(string[] args)
     {
-        int examChoice;
+        // input for subject id
+        Console.Write("Enter subject id: ");
+        int subjectId;
+        while(!int.TryParse(Console.ReadLine(), out subjectId))
+        {
+            Console.Write("Invalid input: ");
+        }
+
+        // input for subject name
+        string? subjectName = "";
+        while(string.IsNullOrWhiteSpace(subjectName))
+        {
+            Console.Write("Please enter subject name: ");
+            subjectName = Console.ReadLine();
+        }
+        Subject subject = new Subject(subjectId, subjectName);
+        
+        // main program
         Console.WriteLine("================== Examination System ==================");
         Console.WriteLine("Choose Exam Type: ");
         Console.WriteLine("1. Final");
         Console.WriteLine("2. Practical");
+
+        int examChoice;
         Console.Write("Enter your exam choice: ");
         while(!int.TryParse(Console.ReadLine(), out examChoice) || examChoice <= 0 || examChoice > 2)
         {
@@ -15,10 +36,12 @@ public class Program
         }
         Console.WriteLine("========================================================");
 
+        int timeOfExam;
         Console.Write("Enter exam time in minutes: ");
-        int.TryParse(Console.ReadLine(), out int timeOfExam);
-        Console.Write("Enter number of questions of exam");
-        int.TryParse(Console.ReadLine(), out int numberofQuestions);
+        int.TryParse(Console.ReadLine(), out timeOfExam);
+        int numberofQuestions;
+        Console.Write("Enter number of questions of exam: ");
+        int.TryParse(Console.ReadLine(), out numberofQuestions);
 
         Question[] questions = new Question[numberofQuestions];
 
@@ -38,15 +61,21 @@ public class Program
                 }
                 if(questionChoice == 1)
                 {
-                    createMCQquestion();
+                    questions[i] = createMCQquestion();
                 }
-                else createTrueOrFalsequestion();
+                else questions[i] = createTrueOrFalsequestion();
             }
             else
             {
                 createMCQquestion();
             }
         }
+
+        Exam exam = createExam(examChoice,timeOfExam,questions);
+
+        subject.CreateExam(exam);
+        Console.WriteLine(subject);
+        exam.ShowExam();
     }
 
     private static TrueOrFalse createTrueOrFalsequestion()
@@ -60,7 +89,6 @@ public class Program
         }
 
         // body input
-        Console.WriteLine("Enter Question body: ");
         string? body = "";
         while(string.IsNullOrWhiteSpace(body))
         {
@@ -77,7 +105,7 @@ public class Program
         Console.WriteLine();
         Console.WriteLine("Enter Right Answer Id: ");
         int rightAnsID;
-        while(!int.TryParse(Console.ReadLine(), out rightAnsID) || rightAnsID != 1 || rightAnsID != 2)
+        while(!int.TryParse(Console.ReadLine(), out rightAnsID) && rightAnsID != 1 && rightAnsID != 2)
         {
             Console.Write("Invalid input as right answer id needs to be either 1 or 2: ");
         }
@@ -152,5 +180,14 @@ public class Program
 
         MCQ mcq = new MCQ(header,body,mark, answerList, answerList[rightAnsID - 1]);
         return mcq;
+    }
+
+    private static Exam createExam(int examChoice, int TimeOfExam, Question[] questions)
+    {
+        if(examChoice == 1)
+        {
+            return new FinalExam(TimeOfExam, questions);
+        }
+        return new PracticalExam(TimeOfExam, questions);
     }
 }
