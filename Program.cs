@@ -8,7 +8,7 @@ public class Program
         // input for subject id
         Console.Write("Enter subject id: ");
         int subjectId;
-        while(!int.TryParse(Console.ReadLine(), out subjectId))
+        while(!int.TryParse(ReadInput(), out subjectId))
         {
             Console.Write("Invalid input: ");
         }
@@ -18,7 +18,7 @@ public class Program
         while(string.IsNullOrWhiteSpace(subjectName))
         {
             Console.Write("Please enter subject name: ");
-            subjectName = Console.ReadLine();
+            subjectName = ReadInput();
         }
         Subject subject = new Subject(subjectId, subjectName);
         
@@ -30,7 +30,7 @@ public class Program
 
         int examChoice;
         Console.Write("Enter your exam choice: ");
-        while(!int.TryParse(Console.ReadLine(), out examChoice) || examChoice <= 0 || examChoice > 2)
+        while(!int.TryParse(ReadInput(), out examChoice) || examChoice <= 0 || examChoice > 2)
         {
             Console.Write("Invalid choice Please choose from 1 and 2: ");
         }
@@ -38,10 +38,16 @@ public class Program
 
         int timeOfExam;
         Console.Write("Enter exam time in minutes: ");
-        int.TryParse(Console.ReadLine(), out timeOfExam);
+        while(!int.TryParse(ReadInput(), out timeOfExam) || timeOfExam <= 0)
+        {
+            Console.Write("Invalid time. Enter a positive number of minutes: ");
+        }
         int numberofQuestions;
         Console.Write("Enter number of questions of exam: ");
-        int.TryParse(Console.ReadLine(), out numberofQuestions);
+        while(!int.TryParse(ReadInput(), out numberofQuestions) || numberofQuestions <= 0)
+        {
+            Console.Write("Invalid number. Enter at least one question: ");
+        }
 
         Question[] questions = new Question[numberofQuestions];
 
@@ -55,7 +61,7 @@ public class Program
                 Console.WriteLine("2. True or False");
                 Console.WriteLine("Enter your choice: ");
                 int questionChoice;
-                while(!int.TryParse(Console.ReadLine(), out questionChoice) || questionChoice <= 0 || questionChoice > 2)
+                while(!int.TryParse(ReadInput(), out questionChoice) || questionChoice <= 0 || questionChoice > 2)
                 {
                     Console.Write("Invalid choice Please choose from 1 and 2: ");
                 }
@@ -63,15 +69,20 @@ public class Program
                 {
                     questions[i] = createMCQquestion();
                 }
-                else questions[i] = createTrueOrFalsequestion();
+                else if(questionChoice == 2)
+                {
+                    questions[i] = createTrueOrFalsequestion();
+                }
             }
             else
             {
-                createMCQquestion();
+                questions[i] = createMCQquestion();
             }
         }
 
         Exam exam = createExam(examChoice,timeOfExam,questions);
+
+        Console.Clear();
 
         subject.CreateExam(exam);
         Console.WriteLine(subject);
@@ -85,7 +96,7 @@ public class Program
         while(string.IsNullOrWhiteSpace(header))
         {
             Console.Write("Please enter a valid question header: ");
-            header = Console.ReadLine();
+            header = ReadInput();
         }
 
         // body input
@@ -93,7 +104,7 @@ public class Program
         while(string.IsNullOrWhiteSpace(body))
         {
             Console.Write("Please enter a valid question body: ");
-            body = Console.ReadLine();
+            body = ReadInput();
         }
 
         // Answers are true or false
@@ -105,7 +116,7 @@ public class Program
         Console.WriteLine();
         Console.WriteLine("Enter Right Answer Id: ");
         int rightAnsID;
-        while(!int.TryParse(Console.ReadLine(), out rightAnsID) && rightAnsID != 1 && rightAnsID != 2)
+        while(!int.TryParse(ReadInput(), out rightAnsID) || rightAnsID < 1 || rightAnsID > 2)
         {
             Console.Write("Invalid input as right answer id needs to be either 1 or 2: ");
         }
@@ -114,7 +125,7 @@ public class Program
         Console.WriteLine();
         Console.WriteLine("Enter Mark: ");
         int mark;
-        while(!int.TryParse(Console.ReadLine(), out mark) || mark < 0)
+        while(!int.TryParse(ReadInput(), out mark) || mark <= 0)
         {
             Console.Write("Invalid input mark needs to be bigger than 0: ");
         }
@@ -130,16 +141,15 @@ public class Program
         while(string.IsNullOrWhiteSpace(header))
         {
             Console.Write("Please enter a valid question header: ");
-            header = Console.ReadLine();
+            header = ReadInput();
         }
 
         // body input
-        Console.WriteLine("Enter Question body: ");
         string? body = "";
         while(string.IsNullOrWhiteSpace(body))
         {
             Console.Write("Please enter a valid question body: ");
-            body = Console.ReadLine();
+            body = ReadInput();
         }
 
         // Answers input
@@ -148,12 +158,11 @@ public class Program
         {
             while(true)
             {
-                Console.Write($"Enter Answer {i+1}: ");
                 string? answerText = "";
                 while(string.IsNullOrWhiteSpace(answerText))
                 {
-                    Console.Write("Please enter a valid question Answer Text: ");
-                    answerText = Console.ReadLine();
+                    Console.Write($"Enter Answer {i+1}: ");
+                    answerText = ReadInput();
                 }   
                 answerList[i] = new Answer(i+1, answerText);
                 break;
@@ -164,7 +173,7 @@ public class Program
         Console.WriteLine();
         Console.WriteLine("Enter Right Answer Id: ");
         int rightAnsID;
-        while(!int.TryParse(Console.ReadLine(), out rightAnsID) || rightAnsID > 4 || rightAnsID < 1)
+        while(!int.TryParse(ReadInput(), out rightAnsID) || rightAnsID > 4 || rightAnsID < 1)
         {
             Console.Write("Invalid input as right answer id needs to be within 1 and 4: ");
         }
@@ -173,13 +182,18 @@ public class Program
         Console.WriteLine();
         Console.WriteLine("Enter Mark: ");
         int mark;
-        while(!int.TryParse(Console.ReadLine(), out mark) || mark < 0)
+        while(!int.TryParse(ReadInput(), out mark) || mark <= 0)
         {
             Console.Write("Invalid input mark needs to be bigger than 0: ");
         }
 
         MCQ mcq = new MCQ(header,body,mark, answerList, answerList[rightAnsID - 1]);
         return mcq;
+    }
+
+    private static string ReadInput()
+    {
+        return Console.ReadLine() ?? throw new InvalidOperationException("Input ended before the exam was completed.");
     }
 
     private static Exam createExam(int examChoice, int TimeOfExam, Question[] questions)

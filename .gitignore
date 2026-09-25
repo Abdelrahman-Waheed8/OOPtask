@@ -1,3 +1,5 @@
 /bin
 /obj
+/validation-bin
+/validation-obj
 *.csproj

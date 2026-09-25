@@ -37,7 +37,13 @@ public abstract class Exam
             while(true)
             {
                 Console.Write("Enter your answer id: ");
-                if(int.TryParse(Console.ReadLine(), out choice) && choice >= minimum && choice <= max)
+                string? answerInput = Console.ReadLine();
+                if(answerInput is null)
+                {
+                    throw new InvalidOperationException("Input ended before the exam was completed.");
+                }
+
+                if(int.TryParse(answerInput, out choice) && choice >= minimum && choice <= max)
                 {
                     break;
                 }
