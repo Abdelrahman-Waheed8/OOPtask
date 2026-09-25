@@ -2,20 +2,56 @@ public abstract class Exam
 {
     protected int _TimeOfExam;
     protected int _NumberOfQuestions;
-    public List<Question> _questions {get;set;}
-
-    public bool IsFinished = false;
-
-    public Exam(int TimeOfExam, int NumberOfQuestions)
+    public Question[] _questions {get;set;}
+    public Exam(int TimeOfExam, Question[] questions)
     {
-        if(TimeOfExam > 0) _TimeOfExam = TimeOfExam;
-        _NumberOfQuestions = NumberOfQuestions;
+        if(TimeOfExam <= 0) throw new ArgumentOutOfRangeException("Time of exam cannot be less than or equal to 0");
+        if(questions.Length == 0) throw new ArgumentException("Exam must have at least 1 question");
+
+        _TimeOfExam = TimeOfExam;
+        _questions = questions;
+        _NumberOfQuestions = questions.Length;
     }
 
-    public void AddQuestion(Question question)
+    public (int, int) StartExam()
     {
-        if(question == null) throw new ArgumentException("Question cannot be null");
-        _questions.Add(question);
+        int totalmark = 0;
+        int grade = 0;
+
+        foreach(var question in _questions)
+        {
+            question.ShowQuestion();
+            totalmark += question.Mark;
+
+            int minimum = 1;
+            int max;
+            if(question is TrueOrFalse)
+            {
+                max = 2;
+            }else 
+            {
+                max = 4;
+            }
+
+            int choice;
+            while(true)
+            {
+                Console.Write("Enter your answer id: ");
+                if(int.TryParse(Console.ReadLine(), out choice) && choice >= minimum && choice <= max)
+                {
+                    break;
+                }
+
+                Console.WriteLine($"Cannot choose an answer with id less than {minimum} and greater than {max}");
+            }
+
+            Answer selectedAns = question.Answers[choice - 1];
+            if(selectedAns._AnswerId == question.RightAnswer._AnswerId)
+            {
+                grade += question.Mark;
+            }
+        }
+        return (grade, totalmark);
     }
     public abstract void ShowExam();
     public override string ToString()

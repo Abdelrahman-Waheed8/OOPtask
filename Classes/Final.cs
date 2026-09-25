@@ -1,15 +1,19 @@
 public class FinalExam : Exam
 {
-    public FinalExam(int TimeOfExam, int NumberOfQuestions) : base(TimeOfExam, NumberOfQuestions)
+    public FinalExam(int TimeOfExam, Question[] questions) : base(TimeOfExam, questions)
     {
     }
 
     public override void ShowExam()
     {
-    }
+        Console.WriteLine("======================================================");
+        Console.WriteLine("                    Final Exam                        ");
+        Console.WriteLine($"{_NumberOfQuestions} question(s)         {_TimeOfExam} minutes");
+        Console.WriteLine("======================================================");
 
-    public int CalculateGrade()
-    {
-        return 1;
+        var (grade, totalmark) = StartExam();
+
+        Console.WriteLine("=================== End of exam ===================");
+        Console.WriteLine($"You scored {grade} / {totalmark}");
     }
 }
