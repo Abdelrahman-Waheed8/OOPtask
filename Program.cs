@@ -1,11 +1,10 @@
-﻿
-using System.Runtime.InteropServices;
-
-public class Program
+﻿public class Program
 {
     public static void Main(string[] args)
     {
-        // input for subject id
+        try
+        {
+            // input for subject id
         Console.Write("Enter subject id: ");
         int subjectId;
         while(!int.TryParse(ReadInput(), out subjectId))
@@ -87,6 +86,11 @@ public class Program
         subject.CreateExam(exam);
         Console.WriteLine(subject);
         exam.ShowExam();
+        }
+        catch(Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+        }
     }
 
     private static TrueOrFalse createTrueOrFalsequestion()
@@ -115,6 +119,7 @@ public class Program
         // right answer input
         Console.WriteLine();
         Console.WriteLine("Enter Right Answer Id: ");
+        Console.WriteLine("1. True \n2. False");
         int rightAnsID;
         while(!int.TryParse(ReadInput(), out rightAnsID) || rightAnsID < 1 || rightAnsID > 2)
         {
@@ -193,7 +198,12 @@ public class Program
 
     private static string ReadInput()
     {
-        return Console.ReadLine() ?? throw new InvalidOperationException("Input ended before the exam was completed.");
+        string? input = Console.ReadLine();
+        if(input == null)
+        {
+            throw new InvalidOperationException("Input ended before the exam was completed.");
+        }
+        return input;
     }
 
     private static Exam createExam(int examChoice, int TimeOfExam, Question[] questions)
