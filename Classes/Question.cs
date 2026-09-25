@@ -1,49 +1,26 @@
-public abstract class Question : ICloneable
+public abstract class Question
 {
-    protected string Header = "";
-    protected string Body = "";
-    protected int Mark;
-    public List<Answer> Answers{get;set;}
-    public Answer? RightAnswer{get;set;}
+    public string Header {get; private set;}
+    public string Body {get; private set;}
+    public int Mark {get; private set;}
+    public Answer[] Answers {get; private set;}
+    public Answer RightAnswer{get; private set;}
 
-    public Question(string header, string body, int mark)
+    public Question(string header, string body, int mark, Answer[] answerlist, Answer rightanswer)
     {
+        if(mark <= 0) throw new ArgumentException("Mark must be greater than 0");
+        if(answerlist.Length < 2) throw new ArgumentException("Answer list needs to be at least of 2 answers");
+        if(!answerlist.Contains(rightanswer)) throw new ArgumentException("The right answer needs to be present in the answer list");
+
         Header = header;
         Body = body;
-        if(mark > 0) Mark = mark;
+        Mark = mark;
+        Answers = answerlist;
+        RightAnswer = rightanswer;
     }
-    public void ShowQuestion()
-    {
-        Console.WriteLine(ToString());
-    }
-
-    public void AddAnswer(Answer answer, bool rightanswer = false)
-    {
-        if(answer == null) return;
-        Answers.Add(answer);
-        if(rightanswer) RightAnswer = answer;
-    }
-
+    public abstract void ShowQuestion();
     public override string ToString()
     {
-        string answertxt = "";
-        if(Answers != null)
-        {
-            foreach(var ans in Answers)
-            {
-                answertxt += $"{ans._AnswerId}- {ans._AnswerText}\n";
-            }
-        }
-
-        return   "========================================\n"+
-                $"{Header} \t ({Mark} Marks)\n"+
-                $"========================================\n"+
-                $"{Body}\n"+
-                $"----------------------------------------\n"+
-                $"{answertxt}";
-    }
-    public object Clone()
-    {
-        throw new NotImplementedException();
+        return $"{Header}: {Body}: {Mark} (marks)";
     }
 }

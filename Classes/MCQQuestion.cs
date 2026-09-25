@@ -1,16 +1,19 @@
 public class MCQ : Question
 {
-    public MCQ(string header, string body, int mark, List<Answer> answers, int rightAnswerId) : base(header, body, mark)
+    public MCQ(string header, string body, int mark, Answer[] answerlist, Answer rightanswer) : base(header, body, mark, answerlist, rightanswer)
     {
-        if(answers.Count()<2) throw new ArgumentException("MCQ must be more than 2");
-        foreach(var ans in answers)
+    }
+
+    public override void ShowQuestion()
+    {
+        Console.WriteLine("------------------------------------------");
+        Console.WriteLine($"               MCQ Question       {Mark} mark(s)  ");
+        Console.WriteLine("------------------------------------------");
+        Console.WriteLine($"{Header}\n{Body}");
+
+        foreach(var ans in Answers)
         {
-            AddAnswer(ans, ans._AnswerId == rightAnswerId);
-        }
-        foreach(var answer in Answers)
-        {
-            if(answer._AnswerId == rightAnswerId) RightAnswer = answer;
-            if(RightAnswer == null) throw new ArgumentException("Answer must be within the answer list");
+            Console.WriteLine($"{ans._AnswerId}. {ans._AnswerText}");
         }
     }
 }

@@ -1,7 +1,7 @@
 public class Answer : ICloneable , IComparable<Answer>
 {
-    public int _AnswerId {get;}
-    public string _AnswerText {get; set;}
+    public int _AnswerId {get; private set;}
+    public string _AnswerText {get; private set;}
 
     public Answer(int AnswerId,string AnswerText)
     {
