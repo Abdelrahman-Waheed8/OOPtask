@@ -84,7 +84,6 @@
         Console.Clear();
 
         subject.CreateExam(exam);
-        Console.WriteLine(subject);
         exam.ShowExam();
         }
         catch(Exception ex)
