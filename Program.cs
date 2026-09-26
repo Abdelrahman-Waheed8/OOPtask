@@ -1,68 +1,72 @@
 ﻿public class Program
 {
+    // ANSI code for colors after searching for better way than Console.ForegroundColor
+    private const string cyan = "\u001b[96m";
+    private const string gray = "\u001b[90m";
+    private const string red = "\u001b[31m";
+    private const string reset = "\u001b[0m";// important so styling is not applied for the rest of the console
     public static void Main(string[] args)
     {
+        DisplayPanel(" EXAMINATION SYSTEM ");
+        Console.WriteLine($"{gray}Create an exam, Let a student have it in same console{reset}\n");
         try
         {
             // input for subject id
-        Console.Write("Enter subject id: ");
+        Console.Write($"  {cyan}> Enter subject id{reset}: ");
         int subjectId;
         while(!int.TryParse(ReadInput(), out subjectId))
         {
-            Console.Write("Invalid input: ");
+            Console.Write($"  {red}> Invalid input{reset}: ");
         }
 
         // input for subject name
         string? subjectName = "";
         while(string.IsNullOrWhiteSpace(subjectName))
         {
-            Console.Write("Please enter subject name: ");
+            Console.Write($"  {cyan}> Please enter subject name{reset}: ");
             subjectName = ReadInput();
         }
         Subject subject = new Subject(subjectId, subjectName);
         
         // main program
-        Console.WriteLine("================== Examination System ==================");
-        Console.WriteLine("Choose Exam Type: ");
-        Console.WriteLine("1. Final");
-        Console.WriteLine("2. Practical");
+        SeperatorWtext("Choose Exam Type");
+        Console.WriteLine($"   1. Final\t (MCQ, True or False)");
+        Console.WriteLine($"   2. Practical\t (MCQ only)\n");
 
         int examChoice;
-        Console.Write("Enter your exam choice: ");
+        Console.Write($"  {cyan}> Enter your exam choice{reset}: ");
         while(!int.TryParse(ReadInput(), out examChoice) || examChoice <= 0 || examChoice > 2)
         {
-            Console.Write("Invalid choice Please choose from 1 and 2: ");
+            Console.Write($"  {red}> Invalid choice Please choose from 1 and 2{reset}: ");
         }
-        Console.WriteLine("========================================================");
 
         int timeOfExam;
-        Console.Write("Enter exam time in minutes: ");
+        Console.Write($"  {cyan}> Enter exam time in minutes{reset}: ");
         while(!int.TryParse(ReadInput(), out timeOfExam) || timeOfExam <= 0)
         {
-            Console.Write("Invalid time. Enter a positive number of minutes: ");
+            Console.Write($"  {red}> Invalid time. Enter a positive number of minutes{reset}: ");
         }
         int numberofQuestions;
-        Console.Write("Enter number of questions of exam: ");
+        Console.Write($"  {cyan}> Enter number of questions of exam{reset}: ");
         while(!int.TryParse(ReadInput(), out numberofQuestions) || numberofQuestions <= 0)
         {
-            Console.Write("Invalid number. Enter at least one question: ");
+            Console.Write($"  {red}> Invalid number. Enter at least one question{reset}: ");
         }
 
         Question[] questions = new Question[numberofQuestions];
 
         for(int i = 0 ; i < numberofQuestions; i++)
         {
-            Console.WriteLine($"======== Question {i + 1} ==========");
+            SeperatorWtext($"Create question {i+1} of {numberofQuestions}");
             if(examChoice == 1)
             {
-                Console.WriteLine("Choose question type: ");
-                Console.WriteLine("1. MCQ");
-                Console.WriteLine("2. True or False");
-                Console.WriteLine("Enter your choice: ");
+                Console.WriteLine("  1. MCQ");
+                Console.WriteLine("  2. True or False\n");
+                Console.Write($"  {cyan}> Enter your choice{reset}: ");
                 int questionChoice;
                 while(!int.TryParse(ReadInput(), out questionChoice) || questionChoice <= 0 || questionChoice > 2)
                 {
-                    Console.Write("Invalid choice Please choose from 1 and 2: ");
+                    Console.Write($"  {red}> Invalid choice Please choose from 1 and 2{reset}: ");
                 }
                 if(questionChoice == 1)
                 {
@@ -92,13 +96,32 @@
         }
     }
 
+    private static void SeperatorWtext(string text)
+    {
+        int firstpartwidth = 5;
+        int secondpartwidth = 45;
+        string seperator = "┌" + new string('─', firstpartwidth) + text + new string('─', secondpartwidth) + "┐";
+        Console.WriteLine($"{cyan}{seperator}{reset}");
+    }
+
+    private static void DisplayPanel(string text)
+    {
+        int width = 50;
+        // creating borders style with special characters
+        string topLine = "╔" + new string('═', width) + "╗";
+        string bottomLine = "╚" + new string('═', width) + "╝";
+        Console.WriteLine($"{cyan}{topLine}");
+        Console.WriteLine($"║\t\t{text}\t\t   ║");
+        Console.WriteLine($"{bottomLine}{reset}");
+    }
+
     private static TrueOrFalse createTrueOrFalsequestion()
     {
         // header input
         string? header = "";
         while(string.IsNullOrWhiteSpace(header))
         {
-            Console.Write("Please enter a valid question header: ");
+            Console.Write($"  {cyan}> Please enter a valid question header{reset}: ");
             header = ReadInput();
         }
 
@@ -106,7 +129,7 @@
         string? body = "";
         while(string.IsNullOrWhiteSpace(body))
         {
-            Console.Write("Please enter a valid question body: ");
+            Console.Write($"  {cyan}> Please enter a valid question body{reset}: ");
             body = ReadInput();
         }
 
@@ -116,22 +139,20 @@
         Answer[] answers = {True, False};
 
         // right answer input
-        Console.WriteLine();
-        Console.WriteLine("Enter Right Answer Id: ");
-        Console.WriteLine("1. True \n2. False");
+        Console.WriteLine("  1. True \n2. False");
+        Console.Write($"  {cyan}> Enter Right Answer Id{reset}: ");
         int rightAnsID;
         while(!int.TryParse(ReadInput(), out rightAnsID) || rightAnsID < 1 || rightAnsID > 2)
         {
-            Console.Write("Invalid input as right answer id needs to be either 1 or 2: ");
+            Console.Write($"  {red}> Invalid input as right answer id needs to be either 1 or 2{reset}: ");
         }
 
         // Mark input
-        Console.WriteLine();
-        Console.WriteLine("Enter Mark: ");
+        Console.Write($"  {cyan}> Enter Mark{reset}: ");
         int mark;
         while(!int.TryParse(ReadInput(), out mark) || mark <= 0)
         {
-            Console.Write("Invalid input mark needs to be bigger than 0: ");
+            Console.Write($"  {red}> Invalid input mark needs to be bigger than 0{reset}: ");
         }
 
         TrueOrFalse ToF = new TrueOrFalse(header,body,mark, answers, answers[rightAnsID - 1]);
@@ -144,7 +165,7 @@
         string? header = "";
         while(string.IsNullOrWhiteSpace(header))
         {
-            Console.Write("Please enter a valid question header: ");
+            Console.Write($"  {cyan}> Please enter a valid question header{reset}: ");
             header = ReadInput();
         }
 
@@ -152,7 +173,7 @@
         string? body = "";
         while(string.IsNullOrWhiteSpace(body))
         {
-            Console.Write("Please enter a valid question body: ");
+            Console.Write($"  {cyan}> Please enter a valid question body{reset}: ");
             body = ReadInput();
         }
 
@@ -165,7 +186,7 @@
                 string? answerText = "";
                 while(string.IsNullOrWhiteSpace(answerText))
                 {
-                    Console.Write($"Enter Answer {i+1}: ");
+                    Console.Write($"  {cyan}> Enter Answer {i+1}{reset}: ");
                     answerText = ReadInput();
                 }   
                 answerList[i] = new Answer(i+1, answerText);
@@ -174,21 +195,19 @@
         }
 
         // right answer input
-        Console.WriteLine();
-        Console.WriteLine("Enter Right Answer Id: ");
+        Console.Write($"  {cyan}> Enter Right Answer Id{reset}: ");
         int rightAnsID;
         while(!int.TryParse(ReadInput(), out rightAnsID) || rightAnsID > 4 || rightAnsID < 1)
         {
-            Console.Write("Invalid input as right answer id needs to be within 1 and 4: ");
+            Console.Write($"  {red}> Invalid input as right answer id needs to be within 1 and 4{reset}: ");
         }
 
         // Mark input
-        Console.WriteLine();
-        Console.WriteLine("Enter Mark: ");
+        Console.Write($"  {cyan}> Enter Mark{reset}: ");
         int mark;
         while(!int.TryParse(ReadInput(), out mark) || mark <= 0)
         {
-            Console.Write("Invalid input mark needs to be bigger than 0: ");
+            Console.Write($"  {red}> Invalid input mark needs to be a whole number ranged from 1 and 100{reset}: ");
         }
 
         MCQ mcq = new MCQ(header,body,mark, answerList, answerList[rightAnsID - 1]);
