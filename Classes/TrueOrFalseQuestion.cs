@@ -6,14 +6,12 @@ public class TrueOrFalse : Question
 
     public override void ShowQuestion()
     {
-        Console.WriteLine("------------------------------------------");
-        Console.WriteLine($"         True or False         {Mark} mark(s)  ");
-        Console.WriteLine("------------------------------------------");
-        Console.WriteLine($"{Header}\n{Body}");
+        Console.WriteLine($"{UI.yellow}{Header}{UI.reset}  {UI.gray}[True or False | {Mark} mark(s)]{UI.reset}");
+        Console.WriteLine(Body);
 
         foreach(var ans in Answers)
         {
-            Console.WriteLine($"{ans._AnswerId}. {ans._AnswerText}");
+            Console.WriteLine($"  {UI.cyan}>{UI.reset} {ans._AnswerId}) {ans._AnswerText}");
         }
     }
 }

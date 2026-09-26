@@ -6,19 +6,17 @@ public class PracticalExam : Exam
 
     public override void ShowExam()
     {
-        Console.WriteLine("======================================================");
-        Console.WriteLine("                    Practical Exam                    ");
-        Console.WriteLine($"{_NumberOfQuestions} question(s)         {_TimeOfExam} minutes");
-        Console.WriteLine("======================================================");
+        UI.SeperatorWtext($"Practical Exam");
+        Console.WriteLine($"{UI.gray}{_NumberOfQuestions} question(s) |  {_TimeOfExam}{UI.reset} minutes\n");
 
         var (grade, totalmark) = StartExam();
 
-        Console.WriteLine("=================== End of exam ===================");
-        Console.WriteLine("Right answers: ");
+        UI.SeperatorWtext("Practical Exam Result");
+        Console.WriteLine($"  {UI.gray}Right answers{UI.gray}: ");
         foreach( var question in _questions)
         {
-            Console.WriteLine($"{question.Header} : {question.RightAnswer._AnswerId}. {question.RightAnswer._AnswerText}");
+            Console.WriteLine($"  {question.Header}: {question.RightAnswer._AnswerId}) {question.RightAnswer._AnswerText}");
         }
-        Console.WriteLine($"You scored {grade} / {totalmark}");
+        UI.DisplayPanel($"Score  {grade} / {totalmark}  |  {(double)grade / totalmark * 100:F1}%");
     }
 }

@@ -36,8 +36,9 @@ public abstract class Exam
             int choice;
             while(true)
             {
-                Console.Write("Enter your answer id: ");
+                Console.Write($"  {UI.cyan}> Enter your answer id{UI.reset}: ");
                 string? answerInput = Console.ReadLine();
+                Console.WriteLine();
                 if(answerInput is null)
                 {
                     throw new InvalidOperationException("Input ended before the exam was completed.");
@@ -48,7 +49,7 @@ public abstract class Exam
                     break;
                 }
 
-                Console.WriteLine($"Cannot choose an answer with id less than {minimum} and greater than {max}");
+                Console.WriteLine($"  {UI.red}> Cannot choose an answer with id less than {minimum} and greater than {max}{UI.reset}");
             }
 
             Answer selectedAns = question.Answers[choice - 1];

@@ -6,14 +6,12 @@ public class FinalExam : Exam
 
     public override void ShowExam()
     {
-        Console.WriteLine("======================================================");
-        Console.WriteLine("                    Final Exam                        ");
-        Console.WriteLine($"{_NumberOfQuestions} question(s)            {_TimeOfExam} minutes");
-        Console.WriteLine("======================================================");
+        UI.SeperatorWtext($"Final Exam");
+        Console.WriteLine($"{UI.gray}{_NumberOfQuestions} question(s) |  {_TimeOfExam}{UI.reset} minutes\n");
 
         var (grade, totalmark) = StartExam();
 
-        Console.WriteLine("=================== End of exam ===================");
-        Console.WriteLine($"You scored {grade} / {totalmark}");
+        UI.SeperatorWtext("Final Exam Result");
+        UI.DisplayPanel($"Score  {grade} / {totalmark}  |  {(double)grade/totalmark * 100:F1}%");
     }
 }
