@@ -1,10 +1,7 @@
-﻿public class Program
+﻿using static UI;
+
+public class Program
 {
-    // ANSI code for colors after searching for better way than Console.ForegroundColor
-    private const string cyan = "\u001b[96m";
-    private const string gray = "\u001b[90m";
-    private const string red = "\u001b[31m";
-    private const string reset = "\u001b[0m";// important so styling is not applied for the rest of the console
     public static void Main(string[] args)
     {
         DisplayPanel(" EXAMINATION SYSTEM ");
@@ -95,26 +92,7 @@
             Console.WriteLine(ex.Message);
         }
     }
-
-    private static void SeperatorWtext(string text)
-    {
-        int firstpartwidth = 5;
-        int secondpartwidth = 45;
-        string seperator = "┌" + new string('─', firstpartwidth) + text + new string('─', secondpartwidth) + "┐";
-        Console.WriteLine($"{cyan}{seperator}{reset}");
-    }
-
-    private static void DisplayPanel(string text)
-    {
-        int width = 50;
-        // creating borders style with special characters
-        string topLine = "╔" + new string('═', width) + "╗";
-        string bottomLine = "╚" + new string('═', width) + "╝";
-        Console.WriteLine($"{cyan}{topLine}");
-        Console.WriteLine($"║\t\t{text}\t\t   ║");
-        Console.WriteLine($"{bottomLine}{reset}");
-    }
-
+    
     private static TrueOrFalse createTrueOrFalsequestion()
     {
         // header input
@@ -139,7 +117,7 @@
         Answer[] answers = {True, False};
 
         // right answer input
-        Console.WriteLine("  1. True \n2. False");
+        Console.WriteLine("  1. True \n  2. False");
         Console.Write($"  {cyan}> Enter Right Answer Id{reset}: ");
         int rightAnsID;
         while(!int.TryParse(ReadInput(), out rightAnsID) || rightAnsID < 1 || rightAnsID > 2)
